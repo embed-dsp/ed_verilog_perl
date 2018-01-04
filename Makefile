@@ -6,29 +6,28 @@
 # $Date:     $
 # $Revision: $
 
-# Package version number (git TAG)
-PACKAGE_VERSION = Verilog-Perl_3_448
 
-# Package name and version number
+PACKAGE_NAME = verilog_perl
+
+# Package version number (git master branch)
+# PACKAGE_VERSION = master
+# PACKAGE = "Verilog-Perl"_$(PACKAGE_VERSION)
+
+# Package version number (git tag)
+PACKAGE_VERSION = Verilog-Perl_3_448
 PACKAGE = $(PACKAGE_VERSION)
 
+# Architecture.
+ARCH = $(shell ./bin/get_arch.sh)
 
-# Select between 32-bit or 64-bit machine (Default 64-bit)
-ifeq ($(M),)
-	M = 64
-endif
-
+# Installation.
+PREFIX = /opt/veripool/$(ARCH)/$(PACKAGE)
+# PREFIX = /opt/veripool/$(PACKAGE)
+# EXEC_PREFIX = $(PREFIX)/$(ARCH)
 
 # Set number of simultaneous jobs (Default 4)
 ifeq ($(J),)
 	J = 4
-endif
-
-
-ifeq ($(M), 64)
-	PREFIX = /opt/veripool/linux_x86_64/$(PACKAGE)
-else
-	PREFIX = /opt/veripool/linux_x86/$(PACKAGE)
 endif
 
 
@@ -54,48 +53,48 @@ all:
 
 .PHONY: clone
 clone:
-	git clone http://git.veripool.org/git/Verilog-Perl verilog_perl
+	git clone http://git.veripool.org/git/Verilog-Perl $(PACKAGE_NAME)
 
 
 .PHONY: pull
 pull:
 	# Discard any local changes
-	cd verilog_perl && git checkout -- .
+	cd $(PACKAGE_NAME) && git checkout -- .
 	
 	# Checkout master branch
-	cd verilog_perl && git checkout master
+	cd $(PACKAGE_NAME) && git checkout master
 	
 	# ...
-	cd verilog_perl && git pull
+	cd $(PACKAGE_NAME) && git pull
 
 
 .PHONY: prepare
 prepare:
 	# Checkout specific version
-	cd verilog_perl && git checkout $(PACKAGE_VERSION)
+	cd $(PACKAGE_NAME) && git checkout $(PACKAGE_VERSION)
 
 
 .PHONY: configure
 configure:
-	cd verilog_perl && perl Makefile.PL PREFIX=$(PREFIX) LIB=$(PREFIX)
+	cd $(PACKAGE_NAME) && perl Makefile.PL PREFIX=$(PREFIX) LIB=$(PREFIX)
 
 
 .PHONY: compile
 compile:
-	cd verilog_perl && make -j$(J)
+	cd $(PACKAGE_NAME) && make -j$(J)
 
 
 .PHONY: install
 install:
-	-mkdir -p $(PREFIX)
-	cd verilog_perl && make install
+	# -mkdir -p $(PREFIX)
+	cd $(PACKAGE_NAME) && make install
 
 
 .PHONY: clean
 clean:
-	cd verilog_perl && make clean
+	cd $(PACKAGE_NAME) && make clean
 
 
 .PHONY: distclean
 distclean:
-	cd verilog_perl && make distclean
+	cd $(PACKAGE_NAME) && make distclean
