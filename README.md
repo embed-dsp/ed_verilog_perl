@@ -2,25 +2,25 @@
 Compile and Install of the Verilog-Perl Library
 ===============================================
 
-This repository contains make file for easy compile and install of the Verilog-Perl Library.
+This repository contains make file for easy compile and install of [Verilog-Perl](https://www.veripool.org/wiki/verilog-perl).
 
-Get tool and source code
-========================
+Get Source Code
+===============
 
 ## ed_verilog_perl
 ```bash
 git clone https://github.com/embed-dsp/ed_verilog_perl.git
 ```
 
-## Verilog-Perl Source
+## Verilog-Perl
 ```bash
 # Enter the ed_verilog_perl directory.
 cd ed_verilog_perl
 
-# Clone Verilog-Perl repository.
+# Clone the Verilog-Perl git repository.
 make clone
 
-# Pull latest updates from Verilog-Perl repository.
+# Pull latest updates from the Verilog-Perl git repository.
 make pull
 
 # Edit the Makefile for selecting the Verilog-Perl source version.
@@ -70,3 +70,6 @@ opt
 
 Notes
 =====
+
+This has been testes with the following Linux distributions and compilers:
+* `Fedora-27 (64-bit)` and `gcc-7.2.1`
