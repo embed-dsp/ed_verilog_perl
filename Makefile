@@ -14,13 +14,24 @@ PACKAGE_NAME = verilog_perl
 # PACKAGE = "Verilog-Perl"_$(PACKAGE_VERSION)
 
 # Package version number (git tag)
-PACKAGE_VERSION = Verilog-Perl_3_448
+PACKAGE_VERSION = Verilog-Perl_3_452
 PACKAGE = $(PACKAGE_VERSION)
 
-# Architecture.
-ARCH = $(shell ./bin/get_arch.sh)
+# Build for 32-bit or 64-bit (Default)
+ifeq ($(M),)
+	M = 64
+endif
 
-# Installation.
+ifeq ($(M),64)
+	# CXXFLAGS = -Wall -O2 -m64
+else
+	# CXXFLAGS = -Wall -O2 -m64
+endif
+
+# Architecture.
+ARCH = $(shell ./bin/get_arch.sh $(M))
+
+# Installation directories.
 PREFIX = /opt/veripool/$(ARCH)/$(PACKAGE)
 # PREFIX = /opt/veripool/$(PACKAGE)
 # EXEC_PREFIX = $(PREFIX)/$(ARCH)
