@@ -14,7 +14,7 @@ PACKAGE_NAME = verilog_perl
 # PACKAGE = "Verilog-Perl"_$(PACKAGE_VERSION)
 
 # Package version number (git tag)
-PACKAGE_VERSION = Verilog-Perl_3_452
+PACKAGE_VERSION = Verilog-Perl_3_454
 PACKAGE = $(PACKAGE_VERSION)
 
 # Build for 32-bit or 64-bit (Default)
@@ -22,24 +22,62 @@ ifeq ($(M),)
 	M = 64
 endif
 
-ifeq ($(M),64)
-	# CXXFLAGS = -Wall -O2 -m64
-else
-	# CXXFLAGS = -Wall -O2 -m64
-endif
-
-# Architecture.
-ARCH = $(shell ./bin/get_arch.sh $(M))
-
-# Installation directories.
-PREFIX = /opt/veripool/$(ARCH)/$(PACKAGE)
-# PREFIX = /opt/veripool/$(PACKAGE)
-# EXEC_PREFIX = $(PREFIX)/$(ARCH)
-
 # Set number of simultaneous jobs (Default 4)
 ifeq ($(J),)
 	J = 4
 endif
+
+# Kernel.
+KERN = $(shell ./bin/get_kernel.sh)
+
+# Machine.
+MACH = $(shell ./bin/get_machine.sh $(M))
+
+# Architecture.
+ARCH = $(KERN)_$(MACH)
+
+# ...
+CONFIGURE_FLAGS =
+
+# Linux specifics.
+ifeq ($(KERN),linux)
+	# Compiler.
+	# CC = /usr/bin/gcc
+	# CXX = /usr/bin/g++
+	# Installation directory.
+	INSTALL_DIR = /opt
+endif
+
+# Cygwin specifics.
+ifeq ($(KERN),cygwin)
+	# Compiler.
+	# CC = /usr/bin/gcc
+	# CXX = /usr/bin/g++
+	# Installation directory.
+	INSTALL_DIR = /cygdrive/c/opt
+endif
+
+# MinGW specifics.
+ifeq ($(KERN),mingw32)
+	# Compiler.
+	# CC = /mingw/bin/gcc
+	# CXX = /mingw/bin/g++
+	# Installation directory.
+	INSTALL_DIR = /c/opt
+endif
+
+# MinGW-W64 specifics.
+ifeq ($(KERN),mingw64)
+	# Compiler.
+	# CC = /mingw64/bin/gcc
+	# CXX = /mingw64/bin/g++
+	# Installation directory.
+	INSTALL_DIR = /c/opt
+endif
+
+# Installation directory.
+PREFIX = $(INSTALL_DIR)/veripool/$(ARCH)/$(PACKAGE)
+# EXEC_PREFIX = $(PREFIX)/$(ARCH)
 
 
 all:
@@ -57,8 +95,8 @@ all:
 	@echo "sudo make install"
 	@echo ""
 	@echo "## Cleanup"
-	@echo "make distclean"
 	@echo "make clean"
+	@echo "make distclean"
 	@echo ""
 
 
@@ -87,7 +125,7 @@ prepare:
 
 .PHONY: configure
 configure:
-	cd $(PACKAGE_NAME) && perl Makefile.PL PREFIX=$(PREFIX) LIB=$(PREFIX)
+	cd $(PACKAGE_NAME) && perl Makefile.PL PREFIX=$(PREFIX) LIB=$(PREFIX) $(CONFIGURE_FLAGS)
 
 
 .PHONY: compile
