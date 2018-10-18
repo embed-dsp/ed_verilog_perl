@@ -17,63 +17,46 @@ PACKAGE_NAME = verilog_perl
 PACKAGE_VERSION = Verilog-Perl_3_454
 PACKAGE = $(PACKAGE_VERSION)
 
-# Build for 32-bit or 64-bit (Default)
-ifeq ($(M),)
-	M = 64
-endif
+# ==============================================================================
 
 # Set number of simultaneous jobs (Default 4)
 ifeq ($(J),)
 	J = 4
 endif
 
-# Kernel.
-KERN = $(shell ./bin/get_kernel.sh)
+# System and Machine.
+SYSTEM = $(shell ./bin/get_system.sh)
+MACHINE = $(shell ./bin/get_machine.sh)
 
-# Machine.
-MACH = $(shell ./bin/get_machine.sh $(M))
-
-# Architecture.
-ARCH = $(KERN)_$(MACH)
-
-# ...
+# System configuration.
 CONFIGURE_FLAGS =
 
-# Linux specifics.
-ifeq ($(KERN),linux)
-	# Compiler.
-	# CC = /usr/bin/gcc
-	# CXX = /usr/bin/g++
+# Linux system.
+ifeq ($(SYSTEM),linux)
 	# Installation directory.
 	INSTALL_DIR = /opt
 endif
 
-# Cygwin specifics.
-ifeq ($(KERN),cygwin)
-	# Compiler.
-	# CC = /usr/bin/gcc
-	# CXX = /usr/bin/g++
+# Cygwin system.
+ifeq ($(SYSTEM),cygwin)
 	# Installation directory.
 	INSTALL_DIR = /cygdrive/c/opt
 endif
 
-# MinGW specifics.
-ifeq ($(KERN),mingw32)
-	# Compiler.
-	# CC = /mingw/bin/gcc
-	# CXX = /mingw/bin/g++
+# MSYS2/mingw32 system.
+ifeq ($(SYSTEM),mingw32)
 	# Installation directory.
 	INSTALL_DIR = /c/opt
 endif
 
-# MinGW-W64 specifics.
-ifeq ($(KERN),mingw64)
-	# Compiler.
-	# CC = /mingw64/bin/gcc
-	# CXX = /mingw64/bin/g++
+# MSYS2/mingw64 system.
+ifeq ($(SYSTEM),mingw64)
 	# Installation directory.
 	INSTALL_DIR = /c/opt
 endif
+
+# Architecture.
+ARCH = $(SYSTEM)_$(MACHINE)
 
 # Installation directory.
 PREFIX = $(INSTALL_DIR)/veripool/$(ARCH)/$(PACKAGE)
@@ -81,6 +64,8 @@ PREFIX = $(INSTALL_DIR)/veripool/$(ARCH)/$(PACKAGE)
 
 
 all:
+	@echo "ARCH   = $(ARCH)"
+	@echo "PREFIX = $(PREFIX)"
 	@echo ""
 	@echo "## Get Source Code"
 	@echo "make clone"
@@ -92,7 +77,7 @@ all:
 	@echo "make compile [J=...]"
 	@echo ""
 	@echo "## Install"
-	@echo "sudo make install"
+	@echo "[sudo] make install"
 	@echo ""
 	@echo "## Cleanup"
 	@echo "make clean"

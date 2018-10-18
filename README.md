@@ -1,55 +1,57 @@
 
 # Compile and Install of the Verilog-Perl Library
 
-This repository contains make file for easy compile and install of [Verilog-Perl](https://www.veripool.org/wiki/verilog-perl).
+This repository contains a **make** file for easy compile and install of 
+[Verilog-Perl](https://www.veripool.org/wiki/verilog-perl).
+The Verilog-Perl library provides Perl parsing and utilities for the Verilog Language.
 
-
-# Prerequisites
-
-## Fedora-27 64-bit | Fedora-28 64-bit
-
-```
-dnf install gcc-c++
-
-dnf install perl
-dnf install perl-devel
-dnf install perl-Digest-SHA
-
-dnf install redhat-rpm-config
-```
+The following scripts are installed by Verilog-Perl:
+* **vhier**
+    * Return all files in a verilog hierarchy using Verilog::Netlist
+* **vpassert**
+    * Preprocess Verilog code assertions
+* **vppreproc**
+    * Preprocess Verilog code using verilog-perl
+* **vrename**
+    * Change signal names across many Verilog files
 
 
 # Get Source Code
 
 ## ed_verilog_perl
+Get the code for this component to a local directory on your PC.
 
 ```bash
 git clone https://github.com/embed-dsp/ed_verilog_perl.git
 ```
 
 ## Verilog-Perl
+Get the code for the Verilog-Perl.
 
 ```bash
 # Enter the ed_verilog_perl directory.
 cd ed_verilog_perl
+```
 
-# FIXME: Only first time
+If this is the first time Verilog-Perl is built, then ...
+```bash
 # Clone the Verilog-Perl git repository.
 make clone
+```
 
-# FIXME: Any other time
+Otherwise just pull the latest updates ...
+```bash
 # Pull latest updates from the Verilog-Perl git repository.
 make pull
 ```
 
+Edit the **Makefile** for selecting the Verilog-Perl source version.
 ```bash
-# FIXME: Check for available versions
-cd iverilog
-git tag
-
-# Edit the Makefile for selecting the Verilog-Perl source version.
+# Edit Makefile ...
 vim Makefile
-PACKAGE_VERSION = Verilog-Perl_3_452
+
+# ... and set Verilog-Perl source version.
+PACKAGE_VERSION = Verilog-Perl_3_454
 ```
 
 
@@ -66,9 +68,11 @@ make configure
 ```
 
 ```bash
-# Compile source code using 4 simultaneous jobs (Default: J=4).
+# Compile source code using 4 simultaneous jobs (Default).
 make compile
-make compile J=4
+
+# Compile source code using 2 simultaneous jobs.
+make compile J=2
 ```
 
 
@@ -85,10 +89,10 @@ The build products are therefore installed in the following locations in order
 to allow separate installation for different architectures:
 
 ```bash
-opt/
+/opt/
 └── veripool/
     ├── linux_x86_64/           # 64-bit binaries and libraries for Linux
-    │   └── Verilog-Perl_3_452/
+    │   └── Verilog-Perl_3_454/
     │       ├── bin/
     │       │   ├── vhier       # Return all files in a verilog hierarchy
     │       │   ├── vpassert    # Preprocess Verilog code assertions
@@ -98,7 +102,7 @@ opt/
     │       └── share/          # ...
     │           ...
     └── linux_x86/              # 32-bit binaries and libraries for Linux
-        └── Verilog-Perl_3_452/
+        └── Verilog-Perl_3_454/
             ├── bin/
             │   ├── vhier       # Return all files in a verilog hierarchy
             │   ├── vpassert    # Preprocess Verilog code assertions
@@ -110,11 +114,29 @@ opt/
 ```
 
 
-# Notes
+# Prerequisites
 
-This has been testes with the following Linux distributions and compilers:
-* `Fedora-27 (64-bit)`
-    * `gcc-7.2.1`
-    * `gcc-7.3.1`
-* `Fedora-28 (64-bit)`
-    * `gcc-8.1.1`
+## Fedora-27 64-bit | Fedora-28 64-bit
+
+```bash
+# ...
+dnf install gcc-c++
+
+# ...
+dnf install perl
+dnf install perl-devel
+dnf install perl-Digest-SHA
+
+# ...
+dnf install redhat-rpm-config
+```
+
+
+# Tested System Configurations
+
+The following system configurations have been tested.
+
+System  | .
+--------|-------------------
+linux   | Fedora-27 64-bit  
+linux   | Fedora-28 64-bit  
