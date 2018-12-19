@@ -14,7 +14,7 @@ PACKAGE_NAME = verilog_perl
 # PACKAGE = "Verilog-Perl"_$(PACKAGE_VERSION)
 
 # Package version number (git tag)
-PACKAGE_VERSION = Verilog-Perl_3_454
+PACKAGE_VERSION = Verilog-Perl_3_456
 PACKAGE = $(PACKAGE_VERSION)
 
 # ==============================================================================
